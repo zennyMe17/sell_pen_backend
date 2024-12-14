@@ -8,7 +8,12 @@ const userSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    required: true,
+    required: false, // Not required anymore, as phone can be used instead
+    unique: true,
+  },
+  phone: {
+    type: String,
+    required: false, // Not required, as email can be used instead
     unique: true,
   },
   password: {
@@ -17,7 +22,7 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-
+// Hash password before saving
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
   const salt = await bcrypt.genSalt(10);
