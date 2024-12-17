@@ -6,17 +6,24 @@ const signup = async (req, res) => {
   const { name, email, phone, password } = req.body;
 
   try {
-    // Check if user already exists by email or phone
-    const userExists = await User.findOne({
-      $or: [{ email }, { phone }]
-    });
-    
+    console.log("Im in backend try block 1")
+    console.log(email)
+    console.log(phone)
+    const userExists = await User.findOne({ $or: [{ email }, { phone }] });
+    console.log("Im in backend try block 2")
+    console.log(email)
+    console.log(userExists)
     if (userExists) {
-      return res.status(400).json({ message: 'User already exists' });
+      return res.status(400).json({ message: 'User already hai' });
     }
-
-    // Create new user
+    console.log("Im in backend try block 3")
+    
+    console.log(name)
+    console.log(email)
+    console.log(phone)
+    console.log(password)
     const user = await User.create({ name, email, phone, password });
+    console.log("Creating New User")
     if (user) {
       res.status(201).json({
         _id: user._id,
@@ -26,6 +33,7 @@ const signup = async (req, res) => {
         token: generateToken(user._id),  
       });
     } else {
+      console.log("im in backend try block 4 user not created")
       res.status(400).json({ message: 'Invalid user data' });
     }
   } catch (error) {
@@ -52,7 +60,8 @@ const login = async (req, res) => {
     if (!isPasswordMatch) {
       return res.status(400).json({ message: 'Invalid password' });
     }
-
+    
+    console.log(user.id)
     // Return user details and token
     res.status(200).json({
       _id: user._id,
